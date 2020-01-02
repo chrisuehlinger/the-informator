@@ -81,6 +81,13 @@ module.exports = async function init() {
   httpServer.on('upgrade', wsUpgrade);
   httpsServer.on('upgrade', wsUpgrade);
 
-  httpServer.listen(8080);
-  httpsServer.listen(8443);
+  let httpPort = 80,
+      httpsPort = 443;
+  if (app.get('env') === 'development') {
+    httpPort += 8000;
+    httpsPort += 8000;
+  }
+
+  httpServer.listen(httpPort);
+  httpsServer.listen(httpsPort);
 };
