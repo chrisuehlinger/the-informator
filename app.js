@@ -1,4 +1,9 @@
+const fs = require('fs');
 const express = require('express');
+const http = require('http');
+const https = require('https');
+const WebSocket = require('ws');
+const url = require('url');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
@@ -63,5 +68,49 @@ app.use((err, req, res, next) => {
         title: 'error'
     });
 });
+
+
+const privateKey  = fs.readFileSync('certs/key.pem', 'utf8');
+const certificate = fs.readFileSync('certs/cert.pem', 'utf8');
+const credentials = {key: privateKey, cert: certificate};
+app.set('port', process.env.PORT || 443);
+
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+
+
+const orbitalWS = new WebSocket.Server({ noServer: true });
+const wss2 = new WebSocket.Server({ noServer: true });
+
+orbitalWS.on('connection', function connection(ws) {
+  console.log('ORBITAL CONNECTED');
+});
+
+wss2.on('connection', function connection(ws) {
+  // ...
+});
+
+function wsUpgrade(request, socket, head) {
+  const pathname = url.parse(request.url).pathname;
+
+  if (pathname === '/orbital') {
+    orbitalWS.handleUpgrade(request, socket, head, function done(ws) {
+      orbitalWS.emit('connection', ws, request);
+    });
+  } else if (pathname === '/bar') {
+    wss2.handleUpgrade(request, socket, head, function done(ws) {
+      wss2.emit('connection', ws, request);
+    });
+  } else {
+    socket.destroy();
+  }
+}
+
+
+httpServer.on('upgrade', wsUpgrade);
+httpsServer.on('upgrade', wsUpgrade);
+
+httpServer.listen(8080);
+httpsServer.listen(8443);
 
 module.exports = app;
