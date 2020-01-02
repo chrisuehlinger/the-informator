@@ -22,14 +22,14 @@ var getIPAddresses = function () {
 
 
 const orbitalWS = new WebSocket.Server({ noServer: true });
-const wss2 = new WebSocket.Server({ noServer: true });
+const bestboyWS = new WebSocket.Server({ noServer: true });
 
 orbitalWS.on('connection', function connection(ws) {
   console.log('ORBITAL CONNECTED');
 });
 
-wss2.on('connection', function connection(ws) {
-  // ...
+bestboyWS.on('connection', function connection(ws) {
+  console.log('BESTBOY CONNECTED');
 });
 
 
@@ -49,12 +49,35 @@ udpPort.on("ready", function () {
 });
 
 udpPort.on("message", function (oscMessage) {
-  console.log('OSC MESSAGE', oscMessage);
-  orbitalWS.clients.forEach(function each(client) {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(oscMessage);
-    }
-  });
+  console.log('OSC MESSAGE', JSON.stringify(oscMessage, null, 4));
+  let namespace = oscMessage.address.split('/')[1];
+  switch(namespace) {
+    case 'orbital':
+      orbitalWS.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(oscMessage);
+        }
+      });
+      break;
+    case 'bestboy':
+      const bestboyMessage = JSON.stringify({
+        messageType: oscMessage.address.split('/')[2],
+        recordingName: oscMessage.address.split('/')[3],
+        duration: oscMessage.args[0].value
+      });
+
+      bestboyWS.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(bestboyMessage);
+        }
+      });
+      break;
+    default:
+      console.log(`No handler for OSC namespace "${namespace}"`)
+
+  }
+
+
 });
 
 udpPort.on("error", function (err) {
@@ -70,9 +93,9 @@ module.exports = function wsUpgrade(request, socket, head) {
     orbitalWS.handleUpgrade(request, socket, head, function done(ws) {
       orbitalWS.emit('connection', ws, request);
     });
-  } else if (pathname === '/bar') {
-    wss2.handleUpgrade(request, socket, head, function done(ws) {
-      wss2.emit('connection', ws, request);
+  } else if (pathname === '/bestboy') {
+    bestboyWS.handleUpgrade(request, socket, head, function done(ws) {
+      bestboyWS.emit('connection', ws, request);
     });
   } else {
     socket.destroy();
