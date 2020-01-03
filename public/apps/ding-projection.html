@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,24 @@
   <title>Document</title>
   <link rel="stylesheet" href="../css/ding-projection.css" />
 </head>
+
 <body>
- <h1>HELLO WORLD</h1>
+
+  <div class="span4">
+    <video id="localVideo" muted></video>
+  </div>
+  <div class="span4">
+    <video id="remoteVideo" autoplay playsinline muted></video>
+    <audio id="remoteAudio" autoplay></audio>
+  </div>
+  <div class="target-wrapper">
+  <canvas id="target"></canvas>
+  </div>
+  <script src="../js/jquery.js"></script>
+  <script src="../js/seriously/seriously.js"></script>
+  <script src="../js/seriously/seriously.camera.js"></script>
+  <script src="../js/seriously/seriously.fisheye.js"></script>
+  <script src="../js/ding-projection.js"></script>
 </body>
+
 </html>

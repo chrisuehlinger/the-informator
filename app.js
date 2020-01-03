@@ -10,6 +10,7 @@ const bodyParser = require('body-parser');
 const routes = require('./routes/index');
 const users = require('./routes/user');
 const upload = require('./routes/upload');
+const signalmaster = require('./routes/signalmaster');
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/upload', upload);
+app.use('/signalmaster', signalmaster);
 
 /// catch 404 and forward to error handler
 app.use((req, res, next) => {
