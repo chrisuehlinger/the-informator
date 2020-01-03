@@ -7,14 +7,21 @@ html, body {
 
 .iphone-mask {
   position: absolute;
-  z-index: -1;
+  z-index: -10;
 }
 
 .iphone-wrapper {
   position: relative;
-  clip-path: url(#iphone-clip);
+  /* clip-path: url(#iphone-clip); */
   width: 375px;
   height: 812px;
+}
+
+.iphone-wrapper.landscape {
+  position: relative;
+  clip-path: url(#iphone-clip-landscape);
+  width: 812px;
+  height: 375px;
 }
 
 .iphone-clock {
