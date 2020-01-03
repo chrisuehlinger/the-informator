@@ -26,13 +26,16 @@ const bestboyWS = new WebSocket.Server({ noServer: true });
 
 orbitalWS.on('connection', function connection(ws) {
   console.log('ORBITAL CONNECTED');
+  console.log(`# of orbitals ${orbitalWS.clients.size}`);
 });
 
 bestboyWS.on('connection', function connection(ws) {
   console.log('BESTBOY CONNECTED');
 });
 
-
+// setInterval(() => {
+//   console.log(`# of orbitals ${orbitalWS.clients.size}`);
+// }, 1000);
 
 var udpPort = new osc.UDPPort({
   localAddress: "0.0.0.0",
@@ -55,7 +58,7 @@ udpPort.on("message", function (oscMessage) {
     case 'orbital':
       orbitalWS.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
-          client.send(oscMessage);
+          client.send(JSON.stringify(oscMessage));
         }
       });
       break;

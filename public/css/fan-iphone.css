@@ -1,0 +1,88 @@
+html, body {
+  background: white;
+  margin: 0;
+  color: rebeccapurple;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+}
+
+header {
+  background: lightseagreen;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-top: 25px;
+}
+
+header .camera-icon {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+}
+
+header h1 {
+  font-family: 'Lobster', cursive;
+  color: rebeccapurple;
+  text-align: center;
+  margin: 10px;
+}
+
+main {
+  padding-top: 100px;
+}
+
+.post-heading {
+  display: flex;
+  align-items: center;
+}
+
+.post-heading .avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 1000px;
+  margin: 10px;
+}
+
+.post-heading .username {
+  font-weight: bold;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.spacer {
+  flex-shrink: 1;
+  flex-basis: 100%;;
+}
+
+.post-heading i {
+  margin: 5px;
+}
+
+.post-image {
+  width: 100%;
+}
+
+.icon-bar {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+}
+
+.icon-bar i {
+  margin: 5px;
+}
+
+.likes {
+  margin: 5px 10px;
+  font-weight: bold;
+}
+
+.caption {
+  margin: 5px 10px;
+}
+
+.comments {
+  margin: 5px 10px;
+  color: #aaa;
+}

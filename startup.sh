@@ -4,5 +4,5 @@ cd ../orbital;
 npm start &
 
 cd ../the-informator;
-node bin/www
+sudo node bin/www
 

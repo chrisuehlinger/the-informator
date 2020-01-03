@@ -1,15 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Orbital Renderer</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="css/orbital.css" />
 </head>
+
 <body>
+  <div id="showtime-area">
+    <!-- <h1 style="color:white;">TEST</h1> -->
+    <svg class="iphone-mask" width="375px" height="812px" viewBox="0 0 375 812" version="1.1"
+      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <clipPath id="iphone-clip">
+          <!-- <circle r="80" cx="100" cy="100"></circle> -->
+          <path
+            d="M292,8.666 L292,8.999 C292,18.264 284.932,29.999 268.667,29.999 L106.667,29.999 C90.402,29.999 83.333,18.264 83.333,8.999 L83.333,8.666 C83.333,4.381 83.333,-0.001 75.667,-0.001 L43.333,-0.001 C16.312,-0.001 0,16.311 0,43.333 L0,768.667 C0,795.688 16.312,812 43.333,812 L331.667,812 C358.688,812 375,795.688 375,768.667 L375,43.333 C375,16.311 358.688,-0.001 331.667,-0.001 L299.667,-0.001 C292,-0.001 292,4.381 292,8.666"
+            id="path-1"></path>
+        </clipPath>
+      </defs>
+    </svg>
+    <div class="iphone-wrapper">
+      <div class="iphone-clock">9:10</div>
+      <div class="icon-tray">
+        <i class="material-icons">signal_cellular_alt</i>
+        <i class="material-icons">wifi</i>
+        <i class="material-icons battery-indicator">battery_full</i>
+      </div>
+      <iframe class="iphone-app" src="/apps/fan-iphone.html"></iframe>
+    </div>
+  </div>
 
   <script src="js/jquery.js"></script>
   <script src="js/orbital.js"></script>
 </body>
+
 </html>

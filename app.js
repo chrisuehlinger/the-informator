@@ -70,8 +70,8 @@ app.use((err, req, res, next) => {
 
 module.exports = async function init() {
   const [privateKey, certificate] = await Promise.all([
-    fs.readFileSync('certs/key.pem', 'utf8'),
-    fs.readFileSync('certs/cert.pem', 'utf8')
+    fs.readFile('certs/key.pem', 'utf8'),
+    fs.readFile('certs/cert.pem', 'utf8')
   ]);
   const credentials = {key: privateKey, cert: certificate};
 
@@ -85,10 +85,10 @@ module.exports = async function init() {
 
   let httpPort = 80,
       httpsPort = 443;
-  if (app.get('env') === 'development') {
-    httpPort += 8000;
-    httpsPort += 8000;
-  }
+  // if (app.get('env') === 'development') {
+  //   httpPort += 8000;
+  //   httpsPort += 8000;
+  // }
 
   httpServer.listen(httpPort);
   httpsServer.listen(httpsPort);
