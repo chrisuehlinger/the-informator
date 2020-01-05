@@ -39,7 +39,8 @@ router.post('/', async function(req, res) {
           {
             module: "@nexrender/action-encode",
             preset: "mp4",
-            output: "output.mp4"
+            output: "output.mp4",
+            params: {"-vcodec": "h264_videotoolbox"}
           },
           {
               module: "@nexrender/action-copy",
