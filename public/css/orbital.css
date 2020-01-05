@@ -12,7 +12,8 @@ html, body {
 
 .iphone-wrapper {
   position: relative;
-  /* clip-path: url(#iphone-clip); */
+  margin: 200px auto;
+  clip-path: url(#iphone-clip);
   width: 375px;
   height: 812px;
 }

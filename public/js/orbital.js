@@ -35,6 +35,17 @@ $(async () => {
       }
     },
     'hello+world': {
+      fan: message => {
+        $showtime.html(`<div class="iphone-wrapper">
+        <div class="iphone-clock">9:10</div>
+        <div class="icon-tray">
+          <i class="material-icons">signal_cellular_alt</i>
+          <i class="material-icons">wifi</i>
+          <i class="material-icons battery-indicator">battery_full</i>
+        </div>
+        <iframe class="iphone-app" src="/apps/fan-iphone.html"></iframe>
+      </div>`)
+      },
       star: message => {
         console.log('STAR!');
         let $image = $('<div class="star" style="background-image: radial-gradient(transparent 50%, black 80%), url(/media/helix-nebula.jpg)"></div>');

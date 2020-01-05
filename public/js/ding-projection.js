@@ -92,6 +92,7 @@ async function waitForAnswer() {
   }
 }
 
+let isSerious = false;
 function onTrack(e){
   console.log('ON TRACK', e);
   let {track} = e;
@@ -100,25 +101,28 @@ function onTrack(e){
     let el = document.getElementById('remoteVideo')
     el.srcObject = e.streams[0];
     el.play();
-    setTimeout(function yessss() {
-      seriously = new Seriously();
-      source = seriously.source('#remoteVideo');
-      if (source.width === 1 && source.height === 1) {
-        return setTimeout(yessss, 100);
-      }
-      target = seriously.target('#target');
-      fisheye = seriously.effect('fisheye');
-      fisheye.aperture = 360;
-      target.source = source;
-      console.log('aspect', source.width, source.height, source)
-      var aspect = source.height / source.width;
-      target.width = Math.min(window.innerWidth, source.width);
-      target.height = target.width * aspect;
-      console.log('HMM', target.width, target.height, aspect)
-      fisheye.source = source;
-      seriously.go();
-      $('#target').show();
-    }, 100);
+    if(!isSerious){
+      isSerious = true;
+      setTimeout(function yessss() {
+        seriously = new Seriously();
+        source = seriously.source('#remoteVideo');
+        if (source.width === 1 && source.height === 1) {
+          return setTimeout(yessss, 100);
+        }
+        target = seriously.target('#target');
+        fisheye = seriously.effect('fisheye');
+        fisheye.aperture = 360;
+        target.source = source;
+        console.log('aspect', source.width, source.height, source)
+        var aspect = source.height / source.width;
+        target.width = Math.min(window.innerWidth, source.width);
+        target.height = target.width * aspect;
+        console.log('HMM', target.width, target.height, aspect)
+        fisheye.source = source;
+        seriously.go();
+        $('#target').show();
+      }, 100);
+    }
   } else if (track.kind === 'audio') {
     console.log('Got remote audio stream', track)
     let el = document.getElementById('remoteAudio')
