@@ -1,7 +1,16 @@
 $(async () => {
   // Cues
+  let displayDict = {
+    'orbital1+0': 'houseleft',
+    'orbital1+1': 'ceiling',
+    'orbital2+0': 'stageleft',
+    'orbital3+0': 'houseright',
+    'commodore+686407758': 'mainpanel',
+    'commodore+551129421': 'stageright',
+    'hello+world': 'local'
+  }
   let config = {
-    'orbital1+0':{
+    houseleft:{
       star: message => {
         let $image = $('<div class="star" style="background-image: radial-gradient(transparent 50%, black 80%), url(/media/killing-galaxy.jpg)"></div>');
         $image.hide();
@@ -10,12 +19,22 @@ $(async () => {
         $image.fadeIn(1000);
       }
     },
-    'orbital1+1':{
+    ceiling:{
 
     },
-    'orbital2+0':{
+    local: {
+
     },
-    'orbital3+0':{
+    stageleft:{
+      star: message => {
+        let $image = $('<div class="star" style="background-image: radial-gradient(transparent 50%, black 80%), url(/media/Orion-Nebula-11X14-copy.jpg)"></div>');
+        $image.hide();
+        $showtime.html('');
+        $showtime.append($image);
+        $image.fadeIn(1000);
+      }
+    },
+    houseright:{
       star: message => {
         let $image = $('<div class="star" style="background-image: radial-gradient(transparent 50%, black 80%), url(/media/space-stuff.jpeg)"></div>');
         $image.hide();
@@ -25,16 +44,7 @@ $(async () => {
       }
 
     },
-    'xana+46928':{
-      star: message => {
-        let $image = $('<div class="star" style="background-image: radial-gradient(transparent 50%, black 80%), url(/media/Orion-Nebula-11X14-copy.jpg)"></div>');
-        $image.hide();
-        $showtime.html('');
-        $showtime.append($image);
-        $image.fadeIn(1000);
-      }
-    },
-    'hello+world': {
+    mainpanel: {
       fan: message => {
         $showtime.html(`<div class="iphone-wrapper">
         <div class="iphone-clock">9:10</div>
@@ -44,11 +54,34 @@ $(async () => {
           <i class="material-icons battery-indicator">battery_full</i>
         </div>
         <iframe class="iphone-app" src="/apps/fan-iphone.html"></iframe>
-      </div>`)
+      </div>`);
+      },
+      recluse: message => {
+        $showtime.html(`
+        <div class="iphone-wrapper">
+          <div class="iphone-clock">9:10</div>
+          <div class="icon-tray">
+            <i class="material-icons">signal_cellular_alt</i>
+            <i class="material-icons">wifi</i>
+            <i class="material-icons battery-indicator">battery_full</i>
+          </div>
+          <iframe class="iphone-app" src="/apps/ding-projection.html"></iframe>
+        </div>
+      `);
       },
       star: message => {
         console.log('STAR!');
         let $image = $('<div class="star" style="background-image: radial-gradient(transparent 50%, black 80%), url(/media/helix-nebula.jpg)"></div>');
+        $image.hide();
+        $showtime.html('');
+        $showtime.append($image);
+        $image.fadeIn(1000);
+      }
+    },
+    stageright: {
+      star: message => {
+        console.log('STAR!');
+        let $image = $('<div class="star" style="background-image: radial-gradient(transparent 50%, black 80%), url(/media/goggles-nebula.jpg)"></div>');
         $image.hide();
         $showtime.html('');
         $showtime.append($image);
@@ -61,8 +94,9 @@ $(async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const HOSTNAME = urlParams.get('host');
   const DISPLAY_ID = urlParams.get('displayid');
-  const DISPLAY_KEY = `${HOSTNAME}+${DISPLAY_ID.slice(0,5)}`;
-  const cues = config[DISPLAY_KEY];
+  const DISPLAY_KEY = `${HOSTNAME}+${DISPLAY_ID}`;
+  const displayName = displayDict[DISPLAY_KEY]
+  const cues = config[displayName];
   let $showtime = $('#showtime-area');
 
   // WebSocket connection stuff
@@ -106,6 +140,7 @@ $(async () => {
           case "debug":
             $showtime.html(`<div class="debug-wrapper">
               <h1>HOSTNAME: <strong>${HOSTNAME}</strong></h1>
+              <h1>NAME: <strong>${displayName}</strong></h1>
               <h1>DISPLAY_ID: <strong>${DISPLAY_ID}</strong></h1>
             </div>`);
             break;

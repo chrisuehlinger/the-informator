@@ -66,7 +66,7 @@ udpPort.on("message", function (oscMessage) {
       const bestboyMessage = JSON.stringify({
         messageType: oscMessage.address.split('/')[2],
         recordingName: oscMessage.address.split('/')[3],
-        duration: oscMessage.args[0].value
+        duration: oscMessage.args[0]
       });
 
       bestboyWS.clients.forEach(function each(client) {
