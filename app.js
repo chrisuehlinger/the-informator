@@ -29,6 +29,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+app.use(bodyParser.raw({
+  limit: '900mb',
+  type: '*/*'
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -87,10 +91,10 @@ module.exports = async function init() {
 
   let httpPort = 80,
       httpsPort = 443;
-  // if (app.get('env') === 'development') {
-  //   httpPort += 8000;
-  //   httpsPort += 8000;
-  // }
+  if (app.get('env') === 'development') {
+    httpPort += 8000;
+    httpsPort += 8000;
+  }
 
   httpServer.listen(httpPort);
   httpsServer.listen(httpsPort);
