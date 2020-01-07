@@ -13,12 +13,12 @@
 
 <body>
 
-  <div class="span4">
+  <div style="position: absolute; z-index: -10; opacity: 0;">
     <video id="localVideo" muted></video>
-  </div>
-  <div class="span4">
-    <video id="remoteVideo" autoplay playsinline muted></video>
     <audio id="remoteAudio" autoplay></audio>
+  </div>
+  <div class="video-wrapper">
+    <video id="remoteVideo" autoplay playsinline muted></video>
   </div>
   <footer>
     <div class="icon-wrapper lock">

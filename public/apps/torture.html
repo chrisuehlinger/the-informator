@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    html, body {
+    margin: 0;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .main-panel {
+    margin: 0 auto;
+    width: 67vw;
+    height: 100vh;
+    /* overflow: hidden; */
+    position:relative;
+  }
+
+  .bricks {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(/media/brick.jpg);
+    background-size: 500px;
+    filter: brightness(0.4) contrast(1.5);
+  }
+
+  .spotlight {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    /* background-image: linear-gradient(to right, #aaa 30%, transparent); */
+    background-image: radial-gradient(circle, rgba(112, 82, 0, 0.7) 30%, transparent 50%);
+    transform: scaleX(0.35) translate(-1500px, 350px);
+  }
+  </style>
+</head>
+<body>
+  <div class="main-panel">
+    <div class="bricks"></div>
+    <div class="spotlight"></div>
+
+  </div>
+
+</body>
+</html>

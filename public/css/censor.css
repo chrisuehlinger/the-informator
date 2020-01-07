@@ -1,0 +1,89 @@
+html, body {
+  background: white;
+  margin: 0;
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  width: 100vw;
+}
+
+
+header {
+  background: dodgerblue;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-top: 25px;
+}
+
+header h1 {
+  font-family: 'Righteous', sans-serif;
+  color: white;
+  text-align: center;
+  margin: 10px;
+}
+
+.violation-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.violation {
+  display: inline-block;
+  font-family: 'Alfa Slab One', cursive;
+  color: red;
+  text-align: center;
+  font-size: 48px;
+  padding: 0px 10px;
+  border: 10px solid red;
+  margin: 100px auto 10px;
+}
+
+.post {
+  margin: 10px 0px;
+  padding: 15px 10px;
+  font-size: 24px;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+
+.date {
+  color: #888;
+}
+
+.censored {
+  filter: blur(10px);
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  background: rebeccapurple;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.like-bar {
+  padding: 10px 0px;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+  margin: 10px;
+  display: flex;
+  justify-content: space-around;
+  font-size: 16px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+}

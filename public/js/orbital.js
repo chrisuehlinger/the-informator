@@ -1,13 +1,16 @@
 $(async () => {
   // Cues
   let displayDict = {
-    'orbital1+0': 'houseleft',
+    'orbital1+0': 'houseright',
     'orbital1+1': 'ceiling',
     'orbital2+0': 'stageleft',
-    'orbital3+0': 'houseright',
+    'orbital3+0': 'houseleft',
     'commodore+686407758': 'mainpanel',
     'commodore+551129421': 'stageright',
-    'hello+world': 'local'
+    'commodore+0': 'mainpanel',
+    'commodore+1': 'stageright',
+    'hello+world': 'local',
+    'hobknob+0': 'stageleft'
   }
   let config = {
     houseleft:{
@@ -23,9 +26,22 @@ $(async () => {
 
     },
     local: {
-
+      censor1: message => {
+        $showtime.html(`<div class="iphone-wrapper left" style="margin-top: 0">
+        <div class="iphone-clock">9:10</div>
+        <div class="icon-tray">
+          <i class="material-icons">signal_cellular_alt</i>
+          <i class="material-icons">wifi</i>
+          <i class="material-icons battery-indicator">battery_full</i>
+        </div>
+        <iframe class="iphone-app" src="/apps/censor.html"></iframe>
+      </div>`);
+      },
     },
     stageleft:{
+      census: message => {
+        $showtime.html(`<iframe class="fullscreen-frame" src="/apps/surveillance.html?display=stageleft"></iframe>`);
+      },
       star: message => {
         let $image = $('<div class="star" style="background-image: radial-gradient(transparent 50%, black 80%), url(/media/Orion-Nebula-11X14-copy.jpg)"></div>');
         $image.hide();
@@ -45,6 +61,9 @@ $(async () => {
 
     },
     mainpanel: {
+      intro: message => {
+        $showtime.html(`<iframe class="fullscreen-frame" src="/apps/intro-title.html"></iframe>`);
+      },
       fan: message => {
         $showtime.html(`<div class="iphone-wrapper">
         <div class="iphone-clock">9:10</div>
@@ -55,6 +74,27 @@ $(async () => {
         </div>
         <iframe class="iphone-app" src="/apps/fan-iphone.html"></iframe>
       </div>`);
+      },
+      torture: message => {
+        $showtime.html(`<iframe class="fullscreen-frame" src="/apps/torture.html"></iframe>`);
+      },
+      irrational: message => {
+        $showtime.html(`<div class="safe-area"><video class="fullwidth" src="/media/tv-palooza.mp4" autoplay></video></div>`);
+        $('video').on('ended', () => {
+          $showtime.html('');
+        })
+      },
+      dream: message => {
+        $showtime.html(`<div class="safe-area"><video class="fullwidth" src="/media/Dream.mp4" autoplay></video></div>`);
+        $('video').on('ended', () => {
+          $showtime.html('');
+        })
+      },
+      god: message => {
+        $showtime.html(`<div class="safe-area"><video class="fullwidth" src="/media/god.mp4" autoplay></video></div>`);
+        $('video').on('ended', () => {
+          $showtime.html('');
+        })
       },
       recluse: message => {
         $showtime.html(`
@@ -76,9 +116,56 @@ $(async () => {
         $showtime.html('');
         $showtime.append($image);
         $image.fadeIn(1000);
-      }
+      },
+      'wedding-video': message => {
+        $showtime.html(`<iframe class="fullscreen-frame" src="/apps/wedding-video.html"></iframe>`);
+      },
+      grief: message => {
+        $showtime.html(`<div class="iphone-wrapper">
+        <div class="iphone-clock">9:10</div>
+        <div class="icon-tray">
+          <i class="material-icons">signal_cellular_alt</i>
+          <i class="material-icons">wifi</i>
+          <i class="material-icons battery-indicator">battery_full</i>
+        </div>
+        <iframe class="iphone-app" src="/apps/grief.html"></iframe>
+      </div>`);
+      },
+      censor: message => {
+        $showtime.html(`<div class="iphone-wrapper left">
+        <div class="iphone-clock">9:10</div>
+        <div class="icon-tray">
+          <i class="material-icons">signal_cellular_alt</i>
+          <i class="material-icons">wifi</i>
+          <i class="material-icons battery-indicator">battery_full</i>
+        </div>
+        <iframe class="iphone-app" src="/apps/censor.html"></iframe>
+      </div>`);
+      },
+      'chinese-poetry': message => {
+        $showtime.html(`<iframe class="fullscreen-frame" src="/apps/chinese-poetry.html"></iframe>`);
+      },
+      virtual: message => {
+        $showtime.html(`<iframe class="fullscreen-frame" src="/apps/virtual.html"></iframe>`);
+      },
+      'small-thing': message => {
+        $showtime.html(`
+        <div class="iphone-wrapper left">
+          <div class="iphone-clock">9:10</div>
+          <div class="icon-tray">
+            <i class="material-icons">signal_cellular_alt</i>
+            <i class="material-icons">wifi</i>
+            <i class="material-icons battery-indicator">battery_full</i>
+          </div>
+          <iframe class="iphone-app" src="/apps/ding-projection.html"></iframe>
+        </div>
+      `);
+      },
     },
     stageright: {
+      census: message => {
+        $showtime.html(`<iframe class="fullscreen-frame" src="/apps/surveillance.html?display=stageright"></iframe>`);
+      },
       star: message => {
         console.log('STAR!');
         let $image = $('<div class="star" style="background-image: radial-gradient(transparent 50%, black 80%), url(/media/goggles-nebula.jpg)"></div>');

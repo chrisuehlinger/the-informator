@@ -84,7 +84,7 @@ module.exports = async function init() {
   var httpServer = http.createServer(app);
   var httpsServer = https.createServer(credentials, app);
 
-  const wsUpgrade = require('./sockets');
+  const { wsUpgrade } = require('./sockets');
 
   httpServer.on('upgrade', wsUpgrade);
   httpsServer.on('upgrade', wsUpgrade);

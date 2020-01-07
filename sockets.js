@@ -1,4 +1,7 @@
 const WebSocket = require('ws');
+const uuid = require('uuid/v4');
+const path = require('path');
+const fs = require('fs').promises;
 const osc = require("osc");
 const url = require('url');
 
@@ -23,6 +26,7 @@ var getIPAddresses = function () {
 
 const orbitalWS = new WebSocket.Server({ noServer: true });
 const bestboyWS = new WebSocket.Server({ noServer: true });
+const controlWS = new WebSocket.Server({ noServer: true });
 
 orbitalWS.on('connection', function connection(ws) {
   console.log('ORBITAL CONNECTED');
@@ -31,6 +35,53 @@ orbitalWS.on('connection', function connection(ws) {
 
 bestboyWS.on('connection', function connection(ws) {
   console.log('BESTBOY CONNECTED');
+});
+
+controlWS.on('connection', async function connection(ws) {
+  console.log('CONTROL PANEL CONNECTED');
+
+  let items = await fs.readdir('public/footage/unapproved')
+  console.log(items);
+  items.map(filename => {
+    ws.send(JSON.stringify({
+      messageType:'newVideo',
+      video:{
+        name: filename.split('.')[0],
+        uuid: uuid(),
+        path: path.join(__dirname, `../public/footage/unapproved/${filename}`)
+      }
+    }));
+  });
+  ws.on('message', oscMessage => {
+    oscMessage = JSON.parse(oscMessage);
+    console.log('OSC MESSAGE (control)', JSON.stringify(oscMessage, null, 4));
+    let namespace = oscMessage.address.split('/')[1];
+    switch(namespace) {
+      case 'orbital':
+        orbitalWS.clients.forEach(function each(client) {
+          if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(oscMessage));
+          }
+        });
+        break;
+      case 'bestboy':
+        const bestboyMessage = JSON.stringify({
+          messageType: oscMessage.address.split('/')[2],
+          recordingName: oscMessage.address.split('/')[3],
+          duration: oscMessage.args[0]
+        });
+
+        bestboyWS.clients.forEach(function each(client) {
+          if (client.readyState === WebSocket.OPEN) {
+            client.send(bestboyMessage);
+          }
+        });
+        break;
+      default:
+        console.log(`No handler for OSC namespace "${namespace}"`)
+
+    }
+  });
 });
 
 // setInterval(() => {
@@ -89,18 +140,31 @@ udpPort.on("error", function (err) {
 
 udpPort.open();
 
-module.exports = function wsUpgrade(request, socket, head) {
-  const pathname = url.parse(request.url).pathname;
+module.exports = {
+  sendControlMessage: function(message) {
+    controlWS.clients.forEach(function each(client) {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify(message));
+      }
+    });
+  },
+  wsUpgrade: function(request, socket, head) {
+    const pathname = url.parse(request.url).pathname;
 
-  if (pathname === '/orbital') {
-    orbitalWS.handleUpgrade(request, socket, head, function done(ws) {
-      orbitalWS.emit('connection', ws, request);
-    });
-  } else if (pathname === '/bestboy') {
-    bestboyWS.handleUpgrade(request, socket, head, function done(ws) {
-      bestboyWS.emit('connection', ws, request);
-    });
-  } else {
-    socket.destroy();
+    if (pathname === '/orbital') {
+      orbitalWS.handleUpgrade(request, socket, head, function done(ws) {
+        orbitalWS.emit('connection', ws, request);
+      });
+    } else if (pathname === '/bestboy') {
+      bestboyWS.handleUpgrade(request, socket, head, function done(ws) {
+        bestboyWS.emit('connection', ws, request);
+      });
+    } else if (pathname === '/control') {
+      controlWS.handleUpgrade(request, socket, head, function done(ws) {
+        controlWS.emit('connection', ws, request);
+      });
+    } else {
+      socket.destroy();
+    }
   }
-};
+}

@@ -1,0 +1,37 @@
+html, body {
+  margin: 0;
+  background: black;
+  color: white;
+}
+
+h1 {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+#bail {
+  font-size: 72px;
+  color: white;
+  background: tomato;
+  padding: 15px;
+}
+
+#refresh {
+  font-size: 72px;
+  color: white;
+  background: rebeccapurple;
+  padding: 15px;
+}
+
+#debug {
+  font-size: 72px;
+  color: white;
+  background: dodgerblue;
+  padding: 15px;
+}
+
+#callmanual {
+  font-size: 72px;
+  color: white;
+  background: green;
+  padding: 15px;
+}

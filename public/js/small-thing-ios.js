@@ -53,9 +53,9 @@ async function startup() {
       audio: true
     };
 
-    if(iOS){
-      constraints.video.facingMode = { exact: "environment" };
-    }
+    // if(iOS){
+    //   constraints.video.facingMode = { exact: "environment" };
+    // }
 
     let stream = await navigator.mediaDevices.getUserMedia(constraints);
       console.log(stream);

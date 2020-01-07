@@ -1,5 +1,5 @@
 html, body {
-  background: white;
+  background: black;
   margin: 0;
 }
 
@@ -36,4 +36,16 @@ footer .lock {
 
 footer .unlock {
   background: green;
+}
+
+.video-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.video-wrapper video {
+  width: 100%;
 }

@@ -1,0 +1,12 @@
+html, body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+h1 {
+  font-size: 96px;
+  margin: 200px auto;
+  text-align: center;
+}

@@ -159,20 +159,20 @@ function onTrack(e){
 
 // pc2.ontrack = onTrack;
 
-function changeVideoCodec(mimeType) {
-  const transceivers = pc2.getTransceivers();
+// function changeVideoCodec(mimeType) {
+//   const transceivers = pc2.getTransceivers();
 
-  transceivers.forEach(transceiver => {
-    const kind = transceiver.sender.track.kind;
-    let sendCodecs = RTCRtpSender.getCapabilities(kind).codecs;
-    let recvCodecs = RTCRtpReceiver.getCapabilities(kind).codecs;
+//   transceivers.forEach(transceiver => {
+//     const kind = transceiver.sender.track.kind;
+//     let sendCodecs = RTCRtpSender.getCapabilities(kind).codecs;
+//     let recvCodecs = RTCRtpReceiver.getCapabilities(kind).codecs;
 
-    if (kind === "video") {
-      sendCodecs = preferCodec(mimeType);
-      recvCodecs = preferCodec(mimeType);
-      transceiver.setCodecPreferences([...sendCodecs, ...recvCodecs]);
-    }
-  });
+//     if (kind === "video") {
+//       sendCodecs = preferCodec(mimeType);
+//       recvCodecs = preferCodec(mimeType);
+//       transceiver.setCodecPreferences([...sendCodecs, ...recvCodecs]);
+//     }
+//   });
 
-  pc2.onnegotiationneeded();
-}
+//   pc2.onnegotiationneeded();
+// }
