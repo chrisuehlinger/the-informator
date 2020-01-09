@@ -54,8 +54,8 @@ async function createLocalOffer() {
 
     let deviceInfos = await navigator.mediaDevices.enumerateDevices();
     console.log('DEVICES', deviceInfos);
-    let audioDevice = deviceInfos.filter(device => device.kind === 'audioinput' && device.label === 'USB 2.0 Camera (0c45:6366)')[0];
-    let videoDevice = deviceInfos.filter(device => device.kind === 'videoinput' && device.label === 'USB 2.0 Camera (0c45:6366)')[0];
+    let audioDevice = deviceInfos.filter(device => device.kind === 'audioinput' && device.label.indexOf('USB 2.0 Camera') !== -1)[0];
+    let videoDevice = deviceInfos.filter(device => device.kind === 'videoinput' && device.label.indexOf('USB 2.0 Camera') !== -1)[0];
     let audioDeviceId = audioDevice && audioDevice.deviceId;
     let videoDeviceId = videoDevice && videoDevice.deviceId;
     console.log('DEVICE IDS', {audioDeviceId, videoDeviceId});
@@ -87,7 +87,7 @@ async function createLocalOffer() {
 async function onIceCandidate(e) {
   console.log('ICE candidate (pc1)', e)
   if (e.candidate == null) {
-    await fetch(`${SIGNALMASTER}/offer`, {
+    await fetch(`${SIGNALMASTER}/offer/smallthing`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -101,7 +101,7 @@ async function onIceCandidate(e) {
 
 async function waitForAnswer() {
   try {
-    let answer = await fetch(`${SIGNALMASTER}/answer`).then(r => r.json());
+    let answer = await fetch(`${SIGNALMASTER}/answer/smallthing`).then(r => r.json());
     console.log('Answer:', answer);
     var answerDesc = new RTCSessionDescription(answer);
     handleAnswerFromPC2(answerDesc)

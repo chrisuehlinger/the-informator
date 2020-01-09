@@ -3,6 +3,21 @@ html, body {
   margin: 0;
 }
 
+header {
+  background: rgba(0,0,0,0.75);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-top: 25px;
+  color: white;
+}
+
+header h1 {
+  font-family: 'Comfortaa', cursive;
+  text-align: center;
+}
+
 footer {
   position: fixed;
   bottom: 0;
@@ -15,10 +30,6 @@ footer {
   color: #eee
 }
 
-footer h1 {
-  font-family: 'Comfortaa', cursive;
-}
-
 footer .icon-wrapper {
   width: 50px;
   height: 50px;
@@ -28,6 +39,18 @@ footer .icon-wrapper {
   align-items: center;
   text-align: center;
   vertical-align: middle;
+  box-sizing: border-box;
+}
+
+footer .mute-toggle {
+  color: white;
+  background: black;
+  border: 1px solid white;
+}
+
+footer .mute-toggle.muted {
+  color: black;
+  background: white;
 }
 
 footer .lock {
@@ -36,6 +59,47 @@ footer .lock {
 
 footer .unlock {
   background: green;
+}
+
+.mute-action-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mute-action {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  background: #ddd;
+  animation: action 0.5s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.mute-action i {
+  font-size: 96px;
+}
+
+@keyframes action{
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
 }
 
 .video-wrapper {

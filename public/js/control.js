@@ -20,6 +20,11 @@ $(async () => {
     };
   });
 
+  $('.preview-modal').hide();
+  $('#closepreview').on('click', () => {
+    $('.preview-modal').hide();
+  })
+
   $('#bail').on('click', () => {
     console.log('BAIL')
     connection.send(JSON.stringify({
@@ -73,11 +78,31 @@ $(async () => {
     $list.html('');
     unapprovedVideos.map(video => {
       let $video = $(`<li>${video.name}</li>`);
-      $video.on('click', e => {
+
+      let $previewButton = $('<i class="material-icons">play_circle_outline</i>');
+      $previewButton.on('click', e => {
+        $('#previewname').text(video.name);
+        $('.video-wrapper').html(`<video src="/footage/unapproved/${video.name}.mp4" controls muted autoplay></video>`)
+        $('.preview-modal').show();
+      })
+      $video.append($previewButton);
+
+      let $approvalButton = $('<i class="material-icons">check</i>');
+      $approvalButton.on('click', e => {
         fetch(`/upload/render/${video.name}`);
         unapprovedVideos = unapprovedVideos.filter(vid => vid.uuid !== video.uuid);
         renderVideoList();
       })
+      $video.append($approvalButton);
+
+      let $rejectButton = $('<i class="material-icons">close</i>');
+      $rejectButton.on('click', e => {
+        fetch(`/upload/delete/${video.name}`);
+        unapprovedVideos = unapprovedVideos.filter(vid => vid.uuid !== video.uuid);
+        renderVideoList();
+      })
+      $video.append($rejectButton);
+
       $list.append($video);
     });
   }

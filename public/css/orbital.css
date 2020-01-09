@@ -37,6 +37,12 @@ html, body {
   z-index: -10;
 }
 
+.iphone-wrapper-wrapper {
+  color: white;
+  filter: drop-shadow(0px 0px 1px white);
+  transition: opacity 1s ease-in;
+}
+
 .iphone-wrapper {
   position: relative;
   margin: 200px auto;
@@ -131,6 +137,17 @@ html, body {
 .safe-area {
     margin: 0 auto;
     width: 67vw;
+    height: 100vh;
+    overflow: hidden;
+    position:relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.full-area {
+    margin: 0 auto;
+    width: 100vw;
     height: 100vh;
     overflow: hidden;
     position:relative;

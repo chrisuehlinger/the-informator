@@ -1,34 +1,33 @@
 const express = require('express');
 const router = express.Router();
 
-let offer = null;
-let answer = null;
+const rtcSignals = require('../util/rtc-signals');
 
-router.get('/offer', function(req, res) {
-  if(offer) {
-    res.json(offer);
-    offer = null;
+router.get('/offer/:app', function(req, res) {
+  if(rtcSignals.offer[req.params.app]) {
+    res.json(rtcSignals.offer[req.params.app]);
+    rtcSignals.offer[req.params.app] = null;
   } else {
     res.sendStatus(404);
   }
 });
 
-router.post('/offer', function(req, res) {
-  offer = req.body;
+router.post('/offer/:app', function(req, res) {
+  rtcSignals.offer[req.params.app] = req.body;
   res.sendStatus(200);
 });
 
-router.get('/answer', function(req, res) {
-  if(answer) {
-    res.json(answer);
-    answer = null;
+router.get('/answer/:app', function(req, res) {
+  if(rtcSignals.answer[req.params.app]) {
+    res.json(rtcSignals.answer[req.params.app]);
+    rtcSignals.answer[req.params.app] = null;
   } else {
     res.sendStatus(404);
   }
 });
 
-router.post('/answer', function(req, res) {
-  answer = req.body;
+router.post('/answer/:app', function(req, res) {
+  rtcSignals.answer[req.params.app] = req.body;
   res.sendStatus(200);
 });
 

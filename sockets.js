@@ -4,6 +4,11 @@ const path = require('path');
 const fs = require('fs').promises;
 const osc = require("osc");
 const url = require('url');
+const del = require('del');
+
+const { exec } = require('child_process');
+
+const rtcSignals = require('./util/rtc-signals');
 
 var getIPAddresses = function () {
   var os = require("os"),
@@ -40,18 +45,24 @@ bestboyWS.on('connection', function connection(ws) {
 controlWS.on('connection', async function connection(ws) {
   console.log('CONTROL PANEL CONNECTED');
 
-  let items = await fs.readdir('public/footage/unapproved')
-  console.log(items);
-  items.map(filename => {
-    ws.send(JSON.stringify({
-      messageType:'newVideo',
-      video:{
-        name: filename.split('.')[0],
-        uuid: uuid(),
-        path: path.join(__dirname, `../public/footage/unapproved/${filename}`)
+  try {
+    let items = await fs.readdir('public/footage/unapproved')
+    console.log(items);
+    items.map(filename => {
+      if(filename !== '.DS_Store'){
+        ws.send(JSON.stringify({
+          messageType:'newVideo',
+          video:{
+            name: filename.split('.')[0],
+            uuid: uuid(),
+            path: path.join(__dirname, `../public/footage/unapproved/${filename}`)
+          }
+        }));
       }
-    }));
-  });
+    });
+  } catch(e) {
+    console.log('Looks like theres no footage yet');
+  }
   ws.on('message', oscMessage => {
     oscMessage = JSON.parse(oscMessage);
     console.log('OSC MESSAGE (control)', JSON.stringify(oscMessage, null, 4));
@@ -77,12 +88,69 @@ controlWS.on('connection', async function connection(ws) {
           }
         });
         break;
+      case 'informator':
+        handleMessage(oscMessage);
+        break;
       default:
         console.log(`No handler for OSC namespace "${namespace}"`)
 
     }
   });
 });
+
+async function handleMessage(message) {
+  let command = message.address.split('/')[2];
+  switch(command) {
+    case 'clear-rtc':
+      rtcSignals.offer = {};
+      rtcSignals.answer = {};
+      break;
+    case 'record-stage':
+      let name =message.address.split('/')[3];
+
+      let unapprovedFolder = path.join(__dirname, `./public/footage/unapproved`);
+      await fs.mkdir(unapprovedFolder, { recursive: true })
+      var yourscript = exec(`./record.sh ${message.address.split('/')[3]} ${message.args[0] || 10}`,
+        (error, stdout, stderr) => {
+            console.log(stdout);
+            console.log(stderr);
+            if (error !== null) {
+                console.log(`exec error: ${error}`);
+            } else {
+              controlWS.clients.forEach(function each(client) {
+                if (client.readyState === WebSocket.OPEN) {
+                  client.send(JSON.stringify({
+                    messageType:'newVideo',
+                    video:{
+                      name,
+                      uuid: uuid(),
+                      path: path.join(__dirname, `../public/footage/unapproved/${name}.mp4`)
+                    }
+                  }));
+                }
+              });
+            }
+        });
+      break;
+    case 'concat-videos':
+      exec(`./concat.sh`,
+        (error, stdout, stderr) => {
+            console.log(stdout);
+            console.log(stderr);
+            if (error !== null) {
+                console.log(`exec error: ${error}`);
+            }
+        });
+      break;
+    case 'delete-footage':
+      const deletedPaths = await del('public/footage');
+      console.log('Footage deleted!' ,deletedPaths)
+      break;
+    default:
+      console.log(`No handler for OSC command "${command}"`)
+
+  }
+}
 
 // setInterval(() => {
 //   console.log(`# of orbitals ${orbitalWS.clients.size}`);
@@ -125,6 +193,9 @@ udpPort.on("message", function (oscMessage) {
           client.send(bestboyMessage);
         }
       });
+      break;
+    case 'informator':
+      handleMessage(oscMessage);
       break;
     default:
       console.log(`No handler for OSC namespace "${namespace}"`)

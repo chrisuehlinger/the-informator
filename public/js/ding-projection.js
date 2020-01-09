@@ -54,8 +54,8 @@ async function createLocalOffer() {
 
     let deviceInfos = await navigator.mediaDevices.enumerateDevices();
     console.log('DEVICES', deviceInfos);
-    let audioDevice = deviceInfos.filter(device => device.kind === 'audioinput' && device.label === 'USB 2.0 Camera (0c45:6366)')[0];
-    let videoDevice = deviceInfos.filter(device => device.kind === 'videoinput' && device.label === 'USB 2.0 Camera (0c45:6366)')[0];
+    let audioDevice = deviceInfos.filter(device => device.kind === 'audioinput' && device.label.indexOf('USB 2.0 Camera') !== -1)[0];
+    let videoDevice = deviceInfos.filter(device => device.kind === 'videoinput' && device.label.indexOf('USB 2.0 Camera') !== -1)[0];
     let audioDeviceId = audioDevice && audioDevice.deviceId;
     let videoDeviceId = videoDevice && videoDevice.deviceId;
     console.log('DEVICE IDS', {audioDeviceId, videoDeviceId});
@@ -87,7 +87,7 @@ async function createLocalOffer() {
 async function onIceCandidate(e) {
   console.log('ICE candidate (pc1)', e)
   if (e.candidate == null) {
-    await fetch(`${SIGNALMASTER}/offer`, {
+    await fetch(`${SIGNALMASTER}/offer/ding`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -101,7 +101,7 @@ async function onIceCandidate(e) {
 
 async function waitForAnswer() {
   try {
-    let answer = await fetch(`${SIGNALMASTER}/answer`).then(r => r.json());
+    let answer = await fetch(`${SIGNALMASTER}/answer/ding`).then(r => r.json());
     console.log('Answer:', answer);
     var answerDesc = new RTCSessionDescription(answer);
     handleAnswerFromPC2(answerDesc)
@@ -175,3 +175,64 @@ function handleCandidateFromPC2(iceCandidate) {
 // pc1.onaddstream = function () {
 //   console.log('WTF!!!!!!!!');
 // }
+
+
+// WebSocket connection stuff
+let connection = null;
+setTimeout(function connectWebSocket() {
+  connection = new WebSocket(`wss://${location.host}/orbital`);
+  connection.onopen = function () {
+    console.log('Connection Established!');
+  }
+  connection.onmessage = onMessage;
+  connection.onerror = function (e) {
+    console.error('UHOH', e);
+    try {
+      connection.close();
+    } catch (e) {
+      onClose();
+    }
+  };
+  connection.onclose = function onClose() {
+    console.log('connection closed, retrying in 1 second');
+    setTimeout(connectWebSocket, 1000);
+  };
+});
+
+// Message handling
+let isMuted = false;
+function onMessage(e) {
+  let { data } = e;
+  console.log('GOTEM', data);
+  let message = JSON.parse(data);
+  const messageType = message.address.split('/')[2];
+  console.log('MESSAGE TYPE', messageType)
+  switch (messageType) {
+    case 'toggle-mute':
+      if(isMuted){
+        $('.mute-toggle').removeClass('muted');
+        $('.mute-action-wrapper').html(`
+        <div class="mute-action">
+          <i class="material-icons">
+            volume_up
+          </i>
+        </div>`);
+      } else {
+        $('.mute-toggle').addClass('muted');
+        $('.mute-action-wrapper').html(`
+        <div class="mute-action">
+          <i class="material-icons">
+            volume_off
+          </i>
+        </div>`);
+
+      }
+      isMuted = !isMuted;
+      break;
+    case 'refreshScreen':
+      location.reload();
+      break;
+    default:
+      console.log(`No message handler for message of type: ${messageType}`);
+  }
+}

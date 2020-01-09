@@ -3,19 +3,19 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=640; initial-scale=1; maximum-scale=1.0;">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Small Thing iOS</title>
+  <link rel="stylesheet" href="../css/small-thing-ios.css" />
 </head>
 
 <body>
-  <h1>SUP!</h1>
   <div class="span4">
     <Video id="localVideo" muted playsinline>
+      <audio id="remoteAudio" autoplay></audio>
   </div>
-  <div class="span4">
-    <Video id="remoteVideo" autoplay playsinline muted></Video>
-    <audio id="remoteAudio" autoplay></audio>
+  <div class="video-area">
+    <video id="remoteVideo" autoplay playsinline muted></video>
   </div>
   <script src="../js/jquery.js"></script>
   <script src="../js/small-thing-ios.js"></script>

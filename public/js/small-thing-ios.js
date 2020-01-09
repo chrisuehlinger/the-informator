@@ -47,8 +47,8 @@ async function startup() {
 
     let constraints = {
       video: {
-        height: 480,
-        width: 640
+        height: 720,
+        width: 1280
       },
       audio: true
     };
@@ -83,7 +83,7 @@ var pc2icedone = false
 let gotOffer = false;
 async function waitForOffer() {
   try {
-    let offer = await fetch(`${SIGNALMASTER}/offer`).then(r => r.json());
+    let offer = await fetch(`${SIGNALMASTER}/offer/smallthing`).then(r => r.json());
     var offerDesc = new RTCSessionDescription(offer)
     console.log('Received remote offer', offerDesc)
     handleOfferFromPC1(offerDesc)
@@ -109,7 +109,7 @@ async function handleOfferFromPC1(offerDesc) {
 async function onicecandidate(e) {
   console.log('ICE candidate (pc2)', e)
   if (e.candidate == null) {
-    await fetch(`${SIGNALMASTER}/answer`, {
+    await fetch(`${SIGNALMASTER}/answer/smallthing`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

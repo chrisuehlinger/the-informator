@@ -1,0 +1,20 @@
+html, body {
+  margin: 0;
+  background: black;
+}
+
+.video-area {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: -1000px;
+  right: -1000px;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+
+}
+/*
+video {
+  max-width: 100%;
+} */

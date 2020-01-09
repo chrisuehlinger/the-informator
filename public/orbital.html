@@ -26,6 +26,20 @@
             d="M292,8.666 L292,8.999 C292,18.264 284.932,29.999 268.667,29.999 L106.667,29.999 C90.402,29.999 83.333,18.264 83.333,8.999 L83.333,8.666 C83.333,4.381 83.333,-0.001 75.667,-0.001 L43.333,-0.001 C16.312,-0.001 0,16.311 0,43.333 L0,768.667 C0,795.688 16.312,812 43.333,812 L331.667,812 C358.688,812 375,795.688 375,768.667 L375,43.333 C375,16.311 358.688,-0.001 331.667,-0.001 L299.667,-0.001 C292,-0.001 292,4.381 292,8.666"
             id="path-1"></path>
       </clipPath>
+      <filter id="whiteshadow" flood-color="blue">
+        <feDropShadow dx="0.2" dy="0.4" stdDeviation="0.2" flood-color="red"/>
+      </filter>
+      <filter id="dropshadow" height="130%">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="3"/> <!-- stdDeviation is how much to blur -->
+        <feOffset dx="2" dy="2" result="offsetblur"/> <!-- how much to offset -->
+        <feComponentTransfer>
+          <feFuncA type="linear" slope="0.5"/> <!-- slope is the opacity of the shadow -->
+        </feComponentTransfer>
+        <feMerge>
+          <feMergeNode/> <!-- this contains the offset blurred image -->
+          <feMergeNode in="SourceGraphic"/> <!-- this contains the element that the filter is applied to -->
+        </feMerge>
+      </filter>
     </defs>
   </svg>
   <div id="showtime-area">

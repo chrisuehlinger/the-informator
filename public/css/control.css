@@ -35,3 +35,42 @@ h1 {
   background: green;
   padding: 15px;
 }
+
+#new-videos li {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+}
+
+#new-videos li i {
+  font-size: 28px;
+  margin: 10px;
+}
+
+.preview-modal {
+  position:fixed;
+  top: 100px;
+  left: 100px;
+  right: 100px;
+  background: black;
+  padding: 10px;
+  border: 1px solid white;
+  border-radius: 20px;
+}
+
+.preview-modal .heading {
+  display: flex;
+  align-items: center;
+}
+.preview-modal .heading i {
+  margin: 10px;
+}
+.preview-modal .heading h2 {
+  margin: 10px;
+}
+
+.preview-modal .video-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

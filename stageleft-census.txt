@@ -1,0 +1,4 @@
+file 'public/footage/approved/audience1.mp4'
+file 'public/footage/approved/stage1.mp4'
+file 'public/footage/approved/audience2.mp4'
+file 'public/footage/approved/stage2.mp4'
